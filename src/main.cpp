@@ -17,7 +17,6 @@ const uint8_t SIREN_PIN[SIZEOF_SIREN] = {D0, D4, D8};
 void Sleep_Timed();
 void WakeUpCallBackFunction();
 uint32_t RTCmillis();
-void Espera(unsigned int TiempoMillis);
 
 void setup() {
   //PARA ASIGNAR LA FUNCIÓN ADECUADA A CADA PIN (ESTÁN MULTIPLEXADOS, VER EXCEL)
@@ -113,14 +112,4 @@ void WakeUpCallBackFunction()
 uint32_t RTCmillis()
 {
   return (system_get_rtc_time() * (system_rtc_clock_cali_proc() >> 12)) / 1000;  // system_get_rtc_time() is in us (but very inaccurate anyway)
-}
-
-void Espera(unsigned int TiempoMillis)
-{
-  unsigned long startTiempoMillis = millis();
-  while (millis() - startTiempoMillis < TiempoMillis) { //tengo q restar en ese orden para que funcione siempre bien
-    //espero
-    yield();  //esto es para evitar que se RESETEE al quedar atrapado dentro del loop.
-  }   
-  //&& digitalRead(12)==HIGH Además de esperar el tiempo indicado, esta función monitorea un pin de entrada del Arduino que haya sido cableado para detectar que ha sucedido algún evento externo. Si esa señal va a nivel BAJO (LOW), se interrumpe el retardo.
 }
